@@ -8,7 +8,6 @@ import Image from "next/image";
 interface CafeInfo {
   id: string;
   name: string;
-  address: string;
   availableSeats: number;
   totalSeats: number;
   distance?: string;

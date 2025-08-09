@@ -157,7 +157,7 @@ export default function MapPage() {
           >
             <motion.div
               className="flex h-full flex-col"
-              animate={{ y: ["-10px", "10px"] }}
+              animate={{ y: ["-5px", "5px"] }}
               transition={{
                 duration: 1,
                 repeat: Infinity,

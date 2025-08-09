@@ -20,6 +20,7 @@ export interface CafeResponse {
   availableSeats: number;
   lastUpdated: string;
   url: string;
+  isManualMonitoring?: boolean;
 }
 
 async function getCafes(params: GetCafesParams) {

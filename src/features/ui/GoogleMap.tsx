@@ -4,7 +4,7 @@ import { GoogleMap, useJsApiLoader, Circle } from "@react-google-maps/api";
 import { useMemo } from "react";
 import CafeMarker from "./CafeMarker";
 
-interface Cafe {
+export interface Cafe {
   id: string;
   name: string;
   position: {
@@ -13,6 +13,7 @@ interface Cafe {
   };
   availableSeats: number;
   totalSeats: number;
+  isManualMonitoring?: boolean;
 }
 
 interface GoogleMapProps {

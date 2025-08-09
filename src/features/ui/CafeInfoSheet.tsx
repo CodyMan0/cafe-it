@@ -8,7 +8,6 @@ import { motion, Variants } from "framer-motion";
 interface CafeInfo {
   id: string;
   name: string;
-  address: string;
   availableSeats: number;
   totalSeats: number;
   distance?: string;
@@ -66,7 +65,6 @@ export function CafeInfoSheet({
           </h2>
           <div className="flex items-center text-gray-600">
             <MapPin className="w-4 h-4 mr-2" />
-            <span className="text-sm">{cafeInfo.address}</span>
           </div>
           {cafeInfo.distance && (
             <div className="flex items-center text-gray-500 mt-1">
