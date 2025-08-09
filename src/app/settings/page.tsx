@@ -10,6 +10,7 @@ import {
   Palette,
   Shield,
   HelpCircle,
+  User2,
 } from "lucide-react";
 
 export default function SettingsPage() {
@@ -20,12 +21,22 @@ export default function SettingsPage() {
     router.push("/onboarding");
   };
 
+  const handleGoToOwnerService = () => {
+    router.push("/owner");
+  };
+
   const settingsItems = [
     {
       icon: RefreshCw,
       title: "온보딩 다시 보기",
       subtitle: "서비스 소개를 다시 확인해보세요",
       onClick: handleRevisitOnboarding,
+    },
+    {
+      icon: User2,
+      title: "점주 서비스로 이동하기",
+      subtitle: "점주로 등록하고 자리 현황을 관리해보세요",
+      onClick: handleGoToOwnerService,
     },
     {
       icon: Bell,

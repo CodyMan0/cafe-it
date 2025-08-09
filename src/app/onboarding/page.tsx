@@ -10,20 +10,20 @@ import type { CarouselApi } from "@/shared/ui/carousel";
 const onboardingSlides = [
   {
     title: "카페잇에 오신 것을 환영합니다",
-    subtitle: "내용 합의중",
+    subtitle: "",
     icon: Coffee,
     description: "직접 카페를 가지 않아도 자리를 확인할 수 있어요.",
   },
   {
     title: "지도로 쉽게 찾기",
-    subtitle: "내용 합의중",
+    subtitle: "",
     icon: MapPin,
     description:
       "지도를 통해 주변 카페를 쉽게 찾고, 상세한 정보를 확인할 수 있습니다.",
   },
   {
     title: "즐겨찾기와 리뷰",
-    subtitle: "내용 합의중",
+    subtitle: "",
     icon: Heart,
     description:
       "좋아하는 카페를 저장하고, 방문 후기를 남겨 다른 사용자들과 공유해보세요.",
