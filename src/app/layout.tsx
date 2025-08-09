@@ -2,6 +2,7 @@ import "./globals.css";
 import { pretendard } from "./fonts";
 import { getMetadata } from "@/shared/getMetadata";
 import TanstackProviders from "./apis/(http-client)/get-query-client";
+import OnboardingRedirector from "./OnboardingRedirector";
 
 export const metadata = getMetadata();
 
@@ -14,7 +15,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.variable} antialiased bg-gray-100`}>
         <div className="max-w-md mx-auto min-h-screen bg-white shadow-sm">
-          <TanstackProviders>{children}</TanstackProviders>
+          <OnboardingRedirector>
+            <TanstackProviders>{children}</TanstackProviders>
+          </OnboardingRedirector>
         </div>
       </body>
     </html>
