@@ -57,7 +57,7 @@ export async function getSeatsAvailability(
   cafeId: string
 ): Promise<SeatAvailability> {
   const response = await fetch(
-    `${BASE_URL}/api/cafes/${cafeId}/seats-availability`
+    `${BASE_URL}api/cafes/${cafeId}/seats-availability`
   );
   if (!response.ok) throw new Error("Failed to fetch seat availability");
   return response.json();
