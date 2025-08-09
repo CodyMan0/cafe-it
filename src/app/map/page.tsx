@@ -1,221 +1,181 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import MobileBar from "@/features/ui/MobileBar";
-import NaverMap from "@/features/ui/NaverMap";
-import CafeMarker from "@/features/ui/CafeMarker";
-import { CafeInfoSheet } from "@/features/ui/CafeInfoSheet";
-
-// 샘플 카페 데이터
-const sampleCafes = [
-  {
-    id: "1",
-    name: "스타벅스 강남점",
-    address: "서울 강남구 강남대로 123",
-    position: { lat: 37.5665, lng: 126.978 },
-    availableSeats: 5,
-    totalSeats: 20,
-  },
-  {
-    id: "2",
-    name: "투썸플레이스 홍대점",
-    address: "서울 마포구 홍대로 456",
-    position: { lat: 37.5575, lng: 126.925 },
-    availableSeats: 0,
-    totalSeats: 15,
-  },
-  {
-    id: "3",
-    name: "할리스 커피 신촌점",
-    address: "서울 서대문구 신촌로 789",
-    position: { lat: 37.5595, lng: 126.943 },
-    availableSeats: 8,
-    totalSeats: 25,
-  },
-  {
-    id: "4",
-    name: "1231 강남점",
-    address: "서울 강남구 강남대로 123",
-    position: { lat: 37.103, lng: 116.978 },
-    availableSeats: 1,
-    totalSeats: 10,
-  },
-  {
-    id: "5",
-    name: "메가MGC커피 신촌점",
-    address: "서울 서대문구 신촌로 234",
-    position: { lat: 37.5585, lng: 126.942 },
-    availableSeats: 12,
-    totalSeats: 30,
-  },
-  {
-    id: "6",
-    name: "이디야 커피 홍대입구점",
-    address: "서울 마포구 홍대로 567",
-    position: { lat: 37.5565, lng: 126.924 },
-    availableSeats: 3,
-    totalSeats: 18,
-  },
-  {
-    id: "7",
-    name: "빽다방 강남역점",
-    address: "서울 강남구 강남대로 456",
-    position: { lat: 37.5675, lng: 126.977 },
-    availableSeats: 0,
-    totalSeats: 12,
-  },
-  {
-    id: "8",
-    name: "컴포즈커피 신촌점",
-    address: "서울 서대문구 신촌로 890",
-    position: { lat: 37.5605, lng: 126.944 },
-    availableSeats: 6,
-    totalSeats: 22,
-  },
-  {
-    id: "9",
-    name: "스타벅스 홍대점",
-    address: "서울 마포구 홍대로 789",
-    position: { lat: 37.5585, lng: 126.926 },
-    availableSeats: 2,
-    totalSeats: 28,
-  },
-  {
-    id: "10",
-    name: "투썸플레이스 강남점",
-    address: "서울 강남구 강남대로 234",
-    position: { lat: 37.5655, lng: 126.979 },
-    availableSeats: 15,
-    totalSeats: 35,
-  },
-  {
-    id: "11",
-    name: "할리스 커피 홍대점",
-    address: "서울 마포구 홍대로 890",
-    position: { lat: 37.5575, lng: 126.927 },
-    availableSeats: 0,
-    totalSeats: 20,
-  },
-  {
-    id: "12",
-    name: "메가MGC커피 강남점",
-    address: "서울 강남구 강남대로 567",
-    position: { lat: 37.5645, lng: 126.976 },
-    availableSeats: 9,
-    totalSeats: 25,
-  },
-  {
-    id: "13",
-    name: "이디야 커피 신촌점",
-    address: "서울 서대문구 신촌로 345",
-    position: { lat: 37.5615, lng: 126.945 },
-    availableSeats: 4,
-    totalSeats: 16,
-  },
-  {
-    id: "14",
-    name: "빽다방 홍대점",
-    address: "서울 마포구 홍대로 123",
-    position: { lat: 37.5595, lng: 126.928 },
-    availableSeats: 7,
-    totalSeats: 19,
-  },
-  {
-    id: "15",
-    name: "컴포즈커피 강남점",
-    address: "서울 강남구 강남대로 890",
-    position: { lat: 37.5635, lng: 126.975 },
-    availableSeats: 11,
-    totalSeats: 32,
-  },
-];
+import GoogleMapComponent from "@/features/ui/GoogleMap";
+import { useGetCafesQuery } from "../apis/map/useGetCafesQuery";
+import CafeList from "./(components)/CafeList";
+import { Label } from "@/shared/ui/label";
+import { Slider } from "@/shared/ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import Image from "next/image";
+import { throttle } from "lodash";
+import { motion } from "framer-motion";
 
 export default function MapPage() {
-  const [mapInstance, setMapInstance] = useState<any>(null);
-  const [selectedCafe, setSelectedCafe] = useState<
-    (typeof sampleCafes)[0] | null
-  >(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
-  const handleMapLoad = (map: any) => {
-    setMapInstance(map);
+  // API 요청에 사용될 반경 값 (Throttling 적용)
+  const [radius, setRadius] = useState(1000);
+  // 슬라이더의 시각적 위치를 위한 상태
+  const [sliderValue, setSliderValue] = useState(1000);
+
+  // 1. 현재 위치 가져오기
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          setLocationError(
+            "위치 정보 접근이 거부되었습니다. 브라우저 설정을 확인해주세요."
+          );
+          console.error("Error getting current location: ", error);
+        }
+      );
+    } else {
+      setLocationError("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
+    }
+  }, []);
+
+  // 2. 현재 위치와 반경을 기반으로 카페 데이터 API 호출
+  const {
+    data: cafesData,
+    isLoading,
+    isError,
+    error,
+  } = useGetCafesQuery(
+    {
+      lat: currentLocation?.lat ?? 0,
+      lng: currentLocation?.lng ?? 0,
+      radius: radius / 1000, // API가 km 단위를 사용할 경우를 가정하여 변환
+    },
+    { enabled: !!currentLocation } // 현재 위치가 있을 때만 쿼리 실행
+  );
+
+  // 3. 지도 컴포넌트에 전달할 데이터 형태로 가공
+  const mapCafes = useMemo(() => {
+    if (!cafesData?.data) return [];
+    return cafesData.data.map((cafe) => ({
+      ...cafe,
+      position: { lat: cafe.lat, lng: cafe.lng },
+    }));
+  }, [cafesData]);
+
+  const displayRadius = useMemo(() => {
+    if (sliderValue >= 1000) {
+      return `${(sliderValue / 1000).toFixed(1)}km`;
+    }
+    return `${sliderValue}m`;
+  }, [sliderValue]);
+
+  // Throttled 함수 생성 (useMemo 사용)
+  const throttledSetRadius = useMemo(
+    () =>
+      throttle((value) => {
+        setRadius(value);
+      }, 300),
+    []
+  );
+
+  const handleSliderChange = (value: number[]) => {
+    setSliderValue(value[0]);
+    throttledSetRadius(value[0]);
   };
 
-  const handleCafeClick = (cafe: (typeof sampleCafes)[0]) => {
-    setSelectedCafe(cafe);
-    setIsSheetOpen(true);
-  };
+  // 로딩 및 에러 상태 처리
+  if (locationError) {
+    return <div>{locationError}</div>;
+  }
+
+  if (!currentLocation) {
+    return <div>현재 위치를 가져오는 중입니다...</div>;
+  }
 
   return (
     <main className="relative flex flex-col h-screen pb-16">
-      {/* 지도 섹션 */}
       <div className="flex-1 relative">
-        <NaverMap
-          center={{ lat: 37.5665, lng: 126.978 }}
-          zoom={12}
-          className="w-full h-full"
-          onMapLoad={handleMapLoad}
+        <GoogleMapComponent
+          cafes={mapCafes}
+          initialCenter={currentLocation}
+          radius={sliderValue} // 시각적 반경은 슬라이더 값을 바로 반영
         />
-
-        {/* 카페 마커들 */}
-        {mapInstance &&
-          sampleCafes.map((cafe) => (
-            <CafeMarker
-              key={cafe.id}
-              map={mapInstance}
-              position={cafe.position}
-              cafeInfo={{
-                id: cafe.id,
-                name: cafe.name,
-                address: cafe.address,
-                availableSeats: cafe.availableSeats,
-                totalSeats: cafe.totalSeats,
-              }}
-            />
-          ))}
       </div>
 
-      {/* 하단 카페 리스트 */}
-      <div className="bg-white border-t border-gray-200 p-4 max-h-64 overflow-y-auto">
-        <h3 className="text-sm font-medium text-gray-900 mb-3">
-          주변 카페 현황
-        </h3>
-        <div className="space-y-3">
-          {sampleCafes.map((cafe) => (
-            <div
-              key={cafe.id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer transition-colors"
-              onClick={() => handleCafeClick(cafe)}
+      <div className="absolute bottom-16 left-0 right-0 bg-white p-4 rounded-t-lg shadow-lg">
+        <div className="grid gap-4">
+          <div className="flex items-center justify-between">
+            <Label
+              htmlFor="radius-slider"
+              className="text-sm font-medium text-muted-foreground"
             >
-              <div>
-                <p className="text-sm font-medium text-gray-900">{cafe.name}</p>
-                <p className="text-xs text-gray-500">{cafe.address}</p>
-              </div>
-              <div className="text-right">
-                <p
-                  className={`text-sm font-medium ${
-                    cafe.availableSeats > 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {cafe.availableSeats > 0 ? "자리 있음" : "자리 없음"}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {cafe.availableSeats}/{cafe.totalSeats}석
-                </p>
-              </div>
-            </div>
-          ))}
+              반경 설정
+            </Label>
+            <span className="font-semibold text-lg">{displayRadius}</span>
+          </div>
+          <Slider
+            id="radius-slider"
+            min={500}
+            max={20000}
+            step={500}
+            value={[sliderValue]}
+            onValueChange={handleSliderChange}
+          />
         </div>
+        <Tabs defaultValue="nearby-cafes" className="mt-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="nearby-cafes">주변 카페</TabsTrigger>
+            <TabsTrigger value="seat-status">실시간 자리 현황</TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="nearby-cafes"
+            className="min-h-[30vh] overflow-y-auto"
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                주변 카페 정보를 불러오는 중입니다...
+              </div>
+            ) : isError ? (
+              <div className="flex items-center justify-center h-full">
+                에러가 발생했습니다: {error.message}
+              </div>
+            ) : (
+              <CafeList cafes={mapCafes} />
+            )}
+          </TabsContent>
+          <TabsContent
+            value="seat-status"
+            className="flex min-h-[30vh] flex-col items-center justify-center"
+          >
+            <motion.div
+              className="flex h-full flex-col"
+              animate={{ y: ["-10px", "10px"] }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              }}
+            >
+              <Image
+                src="/icon/pin.svg"
+                alt="로고_둥둥_이미지"
+                width={100}
+                height={100}
+              />
+            </motion.div>
+            <p className="text-sm text-muted-foreground">준비 중입니다.</p>
+          </TabsContent>
+        </Tabs>
       </div>
-
-      {/* 바텀 시트 */}
-      {selectedCafe && (
-        <CafeInfoSheet
-          open={isSheetOpen}
-          onOpenChange={setIsSheetOpen}
-          cafeInfo={selectedCafe}
-        />
-      )}
 
       <MobileBar />
     </main>

@@ -1,6 +1,7 @@
 import "./globals.css";
 import { pretendard } from "./fonts";
 import { getMetadata } from "@/shared/getMetadata";
+import TanstackProviders from "./apis/(http-client)/get-query-client";
 
 export const metadata = getMetadata();
 
@@ -13,7 +14,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${pretendard.variable} antialiased bg-gray-100`}>
         <div className="max-w-md mx-auto min-h-screen bg-white shadow-sm">
-          {children}
+          <TanstackProviders>{children}</TanstackProviders>
         </div>
       </body>
     </html>

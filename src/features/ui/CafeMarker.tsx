@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { OverlayView } from "@react-google-maps/api";
 import { CafeInfoSheet } from "./CafeInfoSheet";
+import Image from "next/image";
 
 interface CafeInfo {
   id: string;
@@ -13,62 +15,39 @@ interface CafeInfo {
 }
 
 interface CafeMarkerProps {
-  map: any;
   position: { lat: number; lng: number };
   cafeInfo: CafeInfo;
 }
 
-export default function CafeMarker({
-  map,
-  position,
-  cafeInfo,
-}: CafeMarkerProps) {
-  const markerRef = useRef<any>(null);
+const CafeMarker = ({ position, cafeInfo }: CafeMarkerProps) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  useEffect(() => {
-    if (!map || !window.naver) return;
+  const handleMarkerClick = () => {
+    setIsSheetOpen(true);
+  };
 
-    // 마커 생성
-    const marker = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(position.lat, position.lng),
-      map: map,
-      icon: {
-        content: `
-          <div class="cafe-marker" style="
-            background: ${cafeInfo.availableSeats > 0 ? "#10B981" : "#EF4444"};
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            white-space: nowrap;
-            cursor: pointer;
-          ">
-            ${cafeInfo.availableSeats > 0 ? "자리있음" : "자리없음"}
-          </div>
-        `,
-        size: new window.naver.maps.Size(80, 30),
-        anchor: new window.naver.maps.Point(40, 15),
-      },
-    });
-
-    window.naver.maps.Event.addListener(marker, "click", () => {
-      setIsSheetOpen(true);
-    });
-
-    markerRef.current = marker;
-
-    return () => {
-      if (markerRef.current) {
-        markerRef.current.setMap(null);
-      }
-    };
-  }, [map, position, cafeInfo]);
+  const getPixelPositionOffset = (width: number, height: number) => ({
+    x: -(width / 2),
+    y: -height, // 아이콘의 하단 끝이 좌표에 맞도록 y 오프셋 조정
+  });
 
   return (
     <>
+      <OverlayView
+        position={position}
+        mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+        getPixelPositionOffset={getPixelPositionOffset}
+      >
+        <div className="cafe-marker cursor-pointer" onClick={handleMarkerClick}>
+          <Image
+            src="/icon/pin.svg"
+            alt="Cafe Marker"
+            className="w-8 h-8"
+            width={40}
+            height={40}
+          />
+        </div>
+      </OverlayView>
       <CafeInfoSheet
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
@@ -76,4 +55,6 @@ export default function CafeMarker({
       />
     </>
   );
-}
+};
+
+export default CafeMarker;
