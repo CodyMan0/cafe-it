@@ -12,6 +12,8 @@ import Image from "next/image";
 import { throttle } from "lodash";
 import { motion } from "framer-motion";
 import LoadingDots from "./(components)/LoadingDot";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { Button } from "@/shared/ui/button";
 
 export default function MapPage() {
   const [currentLocation, setCurrentLocation] = useState<{
@@ -52,7 +54,6 @@ export default function MapPage() {
     data: cafesData,
     isLoading,
     isError,
-    error,
   } = useGetCafesQuery(
     {
       lat: currentLocation?.lat ?? 0,
@@ -143,8 +144,27 @@ export default function MapPage() {
             {isLoading ? (
               <LoadingDots />
             ) : isError ? (
-              <div className="flex items-center justify-center h-full">
-                에러가 발생했습니다: {error.message}
+              <div className="flex flex-col items-center justify-center h-full space-y-4 p-8">
+                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
+                  <AlertCircle className="w-8 h-8 text-red-500" />
+                </div>
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    데이터를 불러올 수 없습니다
+                  </h3>
+                  <p className="text-sm text-gray-500 max-w-xs">
+                    잠시 후 다시 시도해주세요
+                  </p>
+                </div>
+                <Button
+                  onClick={() => window.location.reload()}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center space-x-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>다시 시도</span>
+                </Button>
               </div>
             ) : (
               <CafeList cafes={mapCafes} />
