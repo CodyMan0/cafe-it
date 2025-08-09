@@ -1,7 +1,6 @@
 import { CafeInfo, SeatAvailability } from "./types";
 
-const BASE_URL =
-  "http://ec2-52-78-140-238.ap-northeast-2.compute.amazonaws.com";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function extractCoordinatesFromUrl(
   url: string
