@@ -6,7 +6,7 @@ export async function extractCoordinatesFromUrl(
   url: string
 ): Promise<{ lat: number; lng: number }> {
   const response = await fetch(
-    `${BASE_URL}/api/maps/extract?url=${encodeURIComponent(url)}`
+    `${BASE_URL}api/maps/extract?url=${encodeURIComponent(url)}`
   );
   const data = await response.json();
   if (data.type === "coordinates" && data.lat && data.lng) {
@@ -22,7 +22,7 @@ export async function createCafe(payload: {
   totalSeats: number;
   url: string;
 }): Promise<CafeInfo> {
-  const response = await fetch(`${BASE_URL}/api/cafes`, {
+  const response = await fetch(`${BASE_URL}api/cafes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -36,7 +36,7 @@ export async function initSeatsAvailability(
   availableSeats: number
 ): Promise<SeatAvailability> {
   const response = await fetch(
-    `${BASE_URL}/api/cafes/${cafeId}/seats-availability`,
+    `${BASE_URL}api/cafes/${cafeId}/seats-availability`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -48,7 +48,7 @@ export async function initSeatsAvailability(
 }
 
 export async function getCafe(cafeId: string): Promise<CafeInfo> {
-  const response = await fetch(`${BASE_URL}/api/cafes/${cafeId}`);
+  const response = await fetch(`${BASE_URL}api/cafes/${cafeId}`);
   if (!response.ok) throw new Error("Failed to fetch cafe info");
   return response.json();
 }
@@ -68,7 +68,7 @@ export async function updateSeatsAvailability(
   availableSeats: number
 ): Promise<SeatAvailability> {
   const response = await fetch(
-    `${BASE_URL}/api/cafes/${cafeId}/seats-availability`,
+    `${BASE_URL}api/cafes/${cafeId}/seats-availability`,
     {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
