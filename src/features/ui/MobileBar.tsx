@@ -1,5 +1,6 @@
 "use client";
 
+import { Settings } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 interface NavItem {
@@ -40,56 +41,7 @@ export default function MobileBar() {
         </svg>
       ),
     },
-    {
-      id: "search",
-      label: "검색",
-      path: "/search",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      ),
-      activeIcon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      ),
-    },
-    {
-      id: "favorites",
-      label: "즐겨찾기",
-      path: "/favorites",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
-      ),
-      activeIcon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      ),
-    },
+
     {
       id: "nearby",
       label: "내 주변",
@@ -121,6 +73,13 @@ export default function MobileBar() {
           <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
+    },
+    {
+      id: "setting",
+      label: "설정",
+      path: "/settings",
+      icon: <Settings className="w-6 h-6" />,
+      activeIcon: <Settings className="w-6 h-6" />,
     },
   ];
 
