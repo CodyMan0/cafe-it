@@ -44,7 +44,6 @@ export default function OnboardingPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
-      {/* 헤더 */}
       <div className="flex justify-end p-6">
         <button
           onClick={handleStart}
