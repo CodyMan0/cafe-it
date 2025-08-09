@@ -24,7 +24,6 @@ export default function MapPage() {
 
   // API 요청에 사용될 반경 값 (Throttling 적용)
   const [radius, setRadius] = useState(1000);
-  // 슬라이더의 시각적 위치를 위한 상태
   const [sliderValue, setSliderValue] = useState(1000);
 
   // 1. 현재 위치 가져오기
