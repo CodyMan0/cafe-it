@@ -17,8 +17,9 @@ const CafeList = ({
   };
 
   const getSeatStatusText = (availableSeats: number, totalSeats: number) => {
-    const ratio = availableSeats / totalSeats;
-    if (ratio === 0) return "No seats";
+    const occupiedSeats = totalSeats - availableSeats;
+    const ratio = occupiedSeats / totalSeats;
+    if (ratio === 1) return "No seats";
     if (ratio < 0.3) return "Seats available";
     return "Plenty of seats";
   };
@@ -82,7 +83,8 @@ const CafeList = ({
 
                     <div className="flex items-end gap-2">
                       <span className="text-sm font-semibold text-gray-900">
-                        {cafe.availableSeats}/{cafe.totalSeats}
+                        {cafe.totalSeats - cafe.availableSeats}/
+                        {cafe.totalSeats}
                       </span>
                     </div>
                   </div>
