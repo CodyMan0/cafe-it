@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "@/shared/ui/carousel";
 import { Button } from "@/shared/ui/button";
 import { Coffee, MapPin, Heart } from "lucide-react";
@@ -9,38 +9,59 @@ import type { CarouselApi } from "@/shared/ui/carousel";
 
 const onboardingSlides = [
   {
-    title: "카페잇에 오신 것을 환영합니다",
+    title: "Welcome to Cafe-it",
     subtitle: "",
     icon: Coffee,
-    description: "직접 카페를 가지 않아도 자리를 확인할 수 있어요.",
+    description: "You can check for available seats without having to go to the cafe.",
   },
   {
-    title: "지도로 쉽게 찾기",
+    title: "Find cafes easily on the map",
     subtitle: "",
     icon: MapPin,
     description:
-      "지도를 통해 주변 카페를 쉽게 찾고, 상세한 정보를 확인할 수 있습니다.",
+      "You can easily find nearby cafes on the map and check detailed information.",
   },
   {
-    title: "즐겨찾기와 리뷰",
+    title: "Favorites and Reviews",
     subtitle: "",
     icon: Heart,
     description:
-      "좋아하는 카페를 저장하고, 방문 후기를 남겨 다른 사용자들과 공유해보세요.",
+      "Save your favorite cafes and leave reviews to share with other users.",
   },
 ];
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [api, setApi] = useState<CarouselApi | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrentSlide(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    });
+  }, [api]);
+
 
   const handleStart = () => {
     router.push("/map");
   };
 
   const handleNext = () => {
-    api?.scrollNext();
+    if (currentSlide === onboardingSlides.length - 1) {
+      router.push("/map");
+    } else {
+      api?.scrollNext();
+    }
   };
+
+  const buttonText =
+    currentSlide === onboardingSlides.length - 1 ? "Start" : "Next";
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
@@ -49,11 +70,11 @@ export default function OnboardingPage() {
           onClick={handleStart}
           className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
         >
-          건너뛰기
+          Skip
         </button>
       </div>
 
-      {/* 메인 콘텐츠 */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col justify-center px-6">
         <Carousel
           className="w-full"
@@ -71,12 +92,12 @@ export default function OnboardingPage() {
                   key={index}
                   className="flex flex-col items-center justify-center text-center space-y-8"
                 >
-                  {/* 아이콘 */}
+                  {/* Icon */}
                   <div className="w-24 h-24 bg-gradient-to-br from-primary-100 to-orange-400 rounded-3xl flex items-center justify-center shadow-lg">
                     <IconComponent className="w-12 h-12 text-white" />
                   </div>
 
-                  {/* 텍스트 콘텐츠 */}
+                  {/* Text content */}
                   <div className="space-y-4 max-w-sm">
                     <h2 className="text-2xl font-bold text-gray-900 leading-tight">
                       {slide.title}
@@ -95,13 +116,13 @@ export default function OnboardingPage() {
         </Carousel>
       </div>
 
-      {/* 하단 버튼 */}
+      {/* Bottom button */}
       <div className="p-6">
         <Button
           onClick={handleNext}
           className="w-full h-14 bg-gray-900 hover:bg-gray-800 text-white font-semibold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200"
         >
-          다음
+          {buttonText}
         </Button>
       </div>
     </div>

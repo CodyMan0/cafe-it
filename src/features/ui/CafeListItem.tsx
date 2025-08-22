@@ -1,20 +1,12 @@
 "use client";
 
-import { MapPin, Users, Clock } from "lucide-react";
+import { Users } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
-
-interface CafeInfo {
-  id: string;
-  name: string;
-  address: string;
-  availableSeats: number;
-  totalSeats: number;
-  distance: string;
-}
+import { CafeResponse } from "@/app/apis/map/useGetCafesQuery";
 
 interface CafeListItemProps {
-  cafe: CafeInfo;
-  onClick: (cafe: CafeInfo) => void;
+  cafe: CafeResponse;
+  onClick: (cafe: CafeResponse) => void;
 }
 
 export function CafeListItem({ cafe, onClick }: CafeListItemProps) {
@@ -30,14 +22,6 @@ export function CafeListItem({ cafe, onClick }: CafeListItemProps) {
           <h3 className="font-semibold text-gray-900 text-lg mb-1">
             {cafe.name}
           </h3>
-          <div className="flex items-center text-gray-600 text-sm mb-2">
-            <MapPin className="w-4 h-4 mr-1" />
-            <span>{cafe.address}</span>
-          </div>
-          <div className="flex items-center text-gray-500 text-sm">
-            <Clock className="w-4 h-4 mr-1" />
-            <span>{cafe.distance}</span>
-          </div>
         </div>
 
         <div className="flex flex-col items-end space-y-2">
@@ -49,7 +33,7 @@ export function CafeListItem({ cafe, onClick }: CafeListItemProps) {
                 : "bg-red-100 text-red-800"
             )}
           >
-            {isAvailable ? "자리 있음" : "자리 없음"}
+            {isAvailable ? "Seats available" : "No seats"}
           </div>
           <div className="flex items-center text-gray-600 text-sm">
             <Users className="w-4 h-4 mr-1" />

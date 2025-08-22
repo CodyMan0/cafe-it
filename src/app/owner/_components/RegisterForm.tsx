@@ -43,7 +43,7 @@ export default function RegisterForm({
       onRegister(cafe.id);
     } catch (err) {
       console.error("Registration error:", err);
-      setError("카페 등록에 실패했습니다. 다시 시도해주세요.");
+      setError("Cafe registration failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -61,7 +61,7 @@ export default function RegisterForm({
       onRegister(trimmed);
     } catch (err) {
       console.error("Login by cafeId failed:", err);
-      setLoginError("유효하지 않은 카페 ID 입니다. 다시 확인해주세요.");
+      setLoginError("Invalid Cafe ID. Please check again.");
     } finally {
       setIsLoggingIn(false);
     }
@@ -87,20 +87,20 @@ export default function RegisterForm({
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">카페 등록</h1>
-            <p className="text-gray-600">카페 정보를 입력해주세요</p>
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">Cafe Registration</h1>
+            <p className="text-gray-600">Please enter the cafe information</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                카페 이름
+                Cafe Name
               </label>
               <input
                 type="text"
                 value={cafeName}
                 onChange={(e) => setCafeName(e.target.value)}
-                placeholder="카페 이름을 입력하세요"
+                placeholder="Enter cafe name"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-600"
                 required
               />
@@ -108,7 +108,7 @@ export default function RegisterForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Google 지도 URL
+                Google Maps URL
               </label>
               <input
                 type="url"
@@ -131,28 +131,28 @@ export default function RegisterForm({
               disabled={isSubmitting || !cafeName.trim() || !googleUrl.trim()}
               className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "등록 중..." : "카페 등록하기"}
+              {isSubmitting ? "Registering..." : "Register Cafe"}
             </button>
           </form>
 
           <div className="relative my-6">
             <div className="flex items-center">
               <div className="flex-1 border-t border-gray-200" />
-              <span className="px-3 text-gray-500 text-sm">또는</span>
+              <span className="px-3 text-gray-500 text-sm">or</span>
               <div className="flex-1 border-t border-gray-200" />
             </div>
           </div>
 
           <div>
             <h2 className="text-lg font-semibold text-gray-800 mb-3">
-              카페 ID로 로그인
+              Login with Cafe ID
             </h2>
             <form onSubmit={handleLoginByCafeId} className="space-y-3">
               <input
                 type="text"
                 value={loginCafeId}
                 onChange={(e) => setLoginCafeId(e.target.value)}
-                placeholder="카페 ID를 입력하세요"
+                placeholder="Enter Cafe ID"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-600"
               />
               {loginError && (
@@ -165,10 +165,10 @@ export default function RegisterForm({
                 disabled={isLoggingIn || !loginCafeId.trim()}
                 className="w-full bg-gray-700 text-white p-3 rounded-lg font-medium hover:shadow transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoggingIn ? "확인 중..." : "카페 ID로 로그인"}
+                {isLoggingIn ? "Verifying..." : "Login with Cafe ID"}
               </button>
               <p className="text-xs text-gray-500 mt-1">
-                이미 등록한 카페가 있다면 카페 ID로 로그인할 수 있어요.
+                If you have already registered a cafe, you can log in with your Cafe ID.
               </p>
             </form>
           </div>

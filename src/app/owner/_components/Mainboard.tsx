@@ -40,7 +40,7 @@ export default function Mainboard({
         setCurrentTime(new Date());
       } catch (err) {
         console.error("Error fetching cafe data:", err);
-        setError("카페 정보를 불러오는데 실패했습니다.");
+        setError("Failed to load cafe information.");
       } finally {
         setIsLoading(false);
       }
@@ -70,7 +70,7 @@ export default function Mainboard({
       setLastUpdated(formatRelativeTime(updated.lastUpdated, currentTime));
     } catch (err) {
       console.error("Error updating seat availability:", err);
-      setError("자리 상태 업데이트에 실패했습니다.");
+      setError("Failed to update seat status.");
     } finally {
       setIsUpdating(false);
     }
@@ -79,10 +79,10 @@ export default function Mainboard({
   const copyCafeId = async () => {
     try {
       await navigator.clipboard.writeText(cafeInfo!.id);
-      setCopyStatus("복사됨!");
+      setCopyStatus("Copied!");
       setTimeout(() => setCopyStatus(""), 1500);
     } catch {
-      setCopyStatus("복사 실패");
+      setCopyStatus("Copy failed");
       setTimeout(() => setCopyStatus(""), 1500);
     }
   };
@@ -92,7 +92,7 @@ export default function Mainboard({
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 p-4 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">카페 정보를 불러오는 중...</p>
+          <p className="text-gray-600">Loading cafe information...</p>
         </div>
       </div>
     );
@@ -103,13 +103,13 @@ export default function Mainboard({
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 p-4 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">
-            {error || "카페 정보를 불러올 수 없습니다."}
+            {error || "Could not load cafe information."}
           </p>
           <button
             onClick={onLogout}
             className="bg-gray-600 text-white px-6 py-2 rounded-lg"
           >
-            다시 시도
+            Retry
           </button>
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function Mainboard({
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
               {cafeInfo.name}
             </h1>
-            <p className="text-gray-600 mb-4">카페 관리 대시보드</p>
+            <p className="text-gray-600 mb-4">Cafe Management Dashboard</p>
             <div
               className={`inline-flex items-center px-4 py-2 rounded-full ${seatStatusColor(
                 seatAvailability.availableSeats
@@ -140,10 +140,10 @@ export default function Mainboard({
 
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            🪑 자리 현황 업데이트
+            🪑 Seat Status Update
           </h2>
           <p className="text-gray-600 mb-6 text-sm">
-            현재 카페의 자리 상황을 선택해주세요
+            Please select the current seat situation in the cafe
           </p>
 
           <div className="space-y-3">
@@ -157,7 +157,7 @@ export default function Mainboard({
               } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-              <span>자리 많음</span>
+              <span>Plenty of seats</span>
               {seatAvailability.availableSeats === 2 && (
                 <svg
                   className="w-5 h-5"
@@ -183,7 +183,7 @@ export default function Mainboard({
               } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
-              <span>자리 있음</span>
+              <span>Seats available</span>
               {seatAvailability.availableSeats === 1 && (
                 <svg
                   className="w-5 h-5"
@@ -209,7 +209,7 @@ export default function Mainboard({
               } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-              <span>자리 없음</span>
+              <span>No seats</span>
               {seatAvailability.availableSeats === 0 && (
                 <svg
                   className="w-5 h-5"
@@ -228,18 +228,18 @@ export default function Mainboard({
 
           {isUpdating && (
             <div className="mt-4 text-center">
-              <p className="text-sm text-gray-600">업데이트 중...</p>
+              <p className="text-sm text-gray-600">Updating...</p>
             </div>
           )}
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            카페 정보
+            Cafe Information
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-600">카페 ID</span>
+              <span className="text-gray-600">Cafe ID</span>
               <div className="flex items-center space-x-2">
                 <span
                   className="font-medium text-gray-800 text-sm select-all"
@@ -250,30 +250,30 @@ export default function Mainboard({
                 <button
                   onClick={copyCafeId}
                   className="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1"
-                  title="클립보드에 복사"
+                  title="Copy to clipboard"
                 >
-                  복사
+                  Copy
                 </button>
               </div>
             </div>
             {copyStatus && (
               <div className="p-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded">
-                {copyStatus} - 분실 시 재로그인을 위해 꼭 보관해 주세요.
+                {copyStatus} - Please keep it safe for re-login in case of loss.
               </div>
             )}
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-600">마지막 업데이트</span>
+              <span className="text-gray-600">Last updated</span>
               <span className="font-medium text-gray-800">{lastUpdated}</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-gray-600">Google 지도</span>
+              <span className="text-gray-600">Google Maps</span>
               <a
                 href={cafeInfo.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 font-medium hover:underline"
               >
-                보기
+                View
               </a>
             </div>
           </div>
@@ -284,13 +284,13 @@ export default function Mainboard({
             href="/"
             className="block w-full bg-gray-600 text-white p-4 rounded-xl font-medium text-center hover:shadow-lg transition-all"
           >
-            고객 페이지로 돌아가기
+            Back to customer page
           </Link>
           <button
             onClick={onLogout}
             className="w-full bg-red-500 text-white p-4 rounded-xl font-medium hover:shadow-lg transition-all"
           >
-            로그아웃
+            Logout
           </button>
         </div>
       </main>

@@ -4,20 +4,20 @@ export function formatRelativeTime(
 ): string {
   try {
     const date = new Date(isoString);
-    if (isNaN(date.getTime())) return "날짜 정보 없음";
+    if (isNaN(date.getTime())) return "No date information";
 
     const diffInMs = currentTime.getTime() - date.getTime();
     const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
     const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-    if (diffInMinutes < 1) return "방금 전";
-    if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
-    if (diffInHours < 24) return `${diffInHours}시간 전`;
-    if (diffInDays < 7) return `${diffInDays}일 전`;
-    return date.toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
+    if (diffInMinutes < 1) return "Just now";
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   } catch {
-    return "날짜 정보 없음";
+    return "No date information";
   }
 }
 
@@ -30,9 +30,9 @@ export function seatCountToStatus(
 }
 
 export function seatStatusText(availableSeats: number): string {
-  if (availableSeats === 0) return "자리 없음";
-  if (availableSeats === 1) return "자리 있음";
-  return "자리 많음";
+  if (availableSeats === 0) return "No seats";
+  if (availableSeats === 1) return "Seats available";
+  return "Plenty of seats";
 }
 
 export function seatStatusColor(availableSeats: number): string {

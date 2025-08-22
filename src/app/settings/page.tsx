@@ -28,41 +28,41 @@ export default function SettingsPage() {
   const settingsItems = [
     {
       icon: RefreshCw,
-      title: "온보딩 다시 보기",
-      subtitle: "서비스 소개를 다시 확인해보세요",
+      title: "Revisit Onboarding",
+      subtitle: "Check the service introduction again",
       onClick: handleRevisitOnboarding,
     },
     {
       icon: User2,
-      title: "점주 서비스로 이동하기",
-      subtitle: "점주로 등록하고 자리 현황을 관리해보세요",
+      title: "Go to Owner Service",
+      subtitle: "Register as an owner and manage seat availability",
       onClick: handleGoToOwnerService,
     },
     {
       icon: Bell,
-      title: "알림 설정",
-      subtitle: "푸시 알림을 관리하세요",
+      title: "Notification Settings",
+      subtitle: "Manage push notifications",
       onClick: () => {},
       disabled: true,
     },
     {
       icon: Palette,
-      title: "테마 설정",
-      subtitle: "다크모드와 라이트모드를 선택하세요",
+      title: "Theme Settings",
+      subtitle: "Choose between dark and light mode",
       onClick: () => {},
       disabled: true,
     },
     {
       icon: Shield,
-      title: "개인정보 처리방침",
-      subtitle: "개인정보 수집 및 이용에 대한 안내",
+      title: "Privacy Policy",
+      subtitle: "Information on collection and use of personal information",
       onClick: () => {},
       disabled: true,
     },
     {
       icon: HelpCircle,
-      title: "고객센터",
-      subtitle: "문의사항이나 버그 신고",
+      title: "Customer Service",
+      subtitle: "Inquiries or bug reports",
       onClick: () => {},
       disabled: true,
     },
@@ -70,12 +70,12 @@ export default function SettingsPage() {
 
   return (
     <main className="relative flex flex-col h-screen pb-16 bg-gray-50">
-      {/* 헤더 */}
+      {/* Header */}
       <div className="bg-white border-b border-gray-100 px-6 py-4">
-        <h1 className="text-xl font-bold text-gray-900">설정</h1>
+        <h1 className="text-xl font-bold text-gray-900">Settings</h1>
       </div>
 
-      {/* 설정 목록 */}
+      {/* Settings list */}
       <div className="flex-1 px-2 py-4 space-y-2">
         {settingsItems.map((item, index) => {
           const IconComponent = item.icon;
@@ -109,7 +109,7 @@ export default function SettingsPage() {
                     </h3>
                     {item.disabled && (
                       <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-500 rounded-full">
-                        준비중
+                        Coming soon
                       </span>
                     )}
                   </div>
@@ -122,10 +122,10 @@ export default function SettingsPage() {
         })}
       </div>
 
-      {/* 앱 정보 */}
+      {/* App info */}
       <div className="px-6 py-4">
         <div className="bg-white rounded-2xl p-4 text-center">
-          <p className="text-sm text-gray-500">카페잇 v0.0.1</p>
+          <p className="text-sm text-gray-500">Cafe-it v0.0.1</p>
         </div>
       </div>
 
