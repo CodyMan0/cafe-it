@@ -140,7 +140,7 @@ export default function Mainboard({
 
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            🪑 Seat Status Update
+            Seat Status Update
           </h2>
           <p className="text-gray-600 mb-6 text-sm">
             Please select the current seat situation in the cafe
@@ -148,17 +148,17 @@ export default function Mainboard({
 
           <div className="space-y-3">
             <button
-              onClick={() => updateSeatAvailability(2)}
+              onClick={() => updateSeatAvailability(0)}
               disabled={isUpdating}
               className={`w-full p-4 rounded-xl font-medium transition-all flex items-center justify-center space-x-3 ${
-                seatAvailability.availableSeats === 2
+                seatAvailability.availableSeats === 0
                   ? "bg-green-500 text-white shadow-lg"
                   : "bg-green-100 text-green-700 hover:bg-green-200"
               } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="w-4 h-4 bg-green-500 rounded-full"></div>
               <span>Plenty of seats</span>
-              {seatAvailability.availableSeats === 2 && (
+              {seatAvailability.availableSeats === 0 && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"
@@ -200,17 +200,17 @@ export default function Mainboard({
             </button>
 
             <button
-              onClick={() => updateSeatAvailability(0)}
+              onClick={() => updateSeatAvailability(2)}
               disabled={isUpdating}
               className={`w-full p-4 rounded-xl font-medium transition-all flex items-center justify-center space-x-3 ${
-                seatAvailability.availableSeats === 0
+                seatAvailability.availableSeats === 2
                   ? "bg-red-500 text-white shadow-lg"
                   : "bg-red-100 text-red-700 hover:bg-red-200"
               } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               <div className="w-4 h-4 bg-red-500 rounded-full"></div>
               <span>No seats</span>
-              {seatAvailability.availableSeats === 0 && (
+              {seatAvailability.availableSeats === 2 && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"

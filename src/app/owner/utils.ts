@@ -24,21 +24,21 @@ export function formatRelativeTime(
 export function seatCountToStatus(
   availableSeats: number
 ): "red" | "yellow" | "green" {
-  if (availableSeats === 0) return "red";
+  if (availableSeats === 0) return "green";
   if (availableSeats === 1) return "yellow";
-  return "green";
+  return "red";
 }
 
 export function seatStatusText(availableSeats: number): string {
-  if (availableSeats === 0) return "No seats";
+  if (availableSeats === 0) return "Plenty of seats";
   if (availableSeats === 1) return "Seats available";
-  return "Plenty of seats";
+  return "No seats";
 }
 
 export function seatStatusColor(availableSeats: number): string {
-  if (availableSeats === 0) return "bg-red-500 text-white";
+  if (availableSeats === 0) return "bg-green-500 text-white";
   if (availableSeats === 1) return "bg-yellow-500 text-white";
-  return "bg-green-500 text-white";
+  return "bg-red-500 text-white";
 }
 
 // Display cafeId as truncated with ... when it exceeds a max length
