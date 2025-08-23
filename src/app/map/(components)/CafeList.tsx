@@ -12,16 +12,15 @@ const CafeList = ({
   const getSeatStatusColor = (availableSeats: number, totalSeats: number) => {
     const ratio = availableSeats / totalSeats;
     if (ratio === 0) return "bg-green-100 text-green-700 border-green-200";
-    if (ratio < 0.3) return "bg-orange-100 text-orange-700 border-orange-200";
-    return " bg-red-100 text-red-700 border-red-200";
+    if (ratio === 1) return "bg-red-100 text-red-700 border-red-200";
+    return "bg-orange-100 text-orange-700 border-orange-200";
   };
 
   const getSeatStatusText = (availableSeats: number, totalSeats: number) => {
-    const occupiedSeats = totalSeats - availableSeats;
-    const ratio = occupiedSeats / totalSeats;
-    if (ratio === 1) return "Plenty of seats";
-    if (ratio < 0.3) return "Seats available";
-    return "No seats ";
+    const ratio = availableSeats / totalSeats;
+    if (ratio === 0) return "Plenty of seats";
+    if (ratio === 1) return "No seats";
+    return "Seats available";
   };
 
   return (
