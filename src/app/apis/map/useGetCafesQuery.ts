@@ -43,6 +43,5 @@ export function useGetCafesQuery(
     enabled: options?.enabled ?? true,
     staleTime: 5 * 60 * 1000,
     retry: 1,
-    refetchInterval: 500,
   });
 }
