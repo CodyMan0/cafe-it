@@ -40,8 +40,9 @@ export function useGetCafesQuery(
   return useQuery({
     queryKey: ["cafes", params.lat, params.lng, params.radius],
     queryFn: () => getCafes(params),
-    enabled: options?.enabled ?? true, // 쿼리를 조건부로 실행할 수 있도록 enabled 옵션 추가
+    enabled: options?.enabled ?? true,
     staleTime: 5 * 60 * 1000,
     retry: 1,
+    refetchInterval: 500,
   });
 }
